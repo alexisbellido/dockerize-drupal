@@ -35,7 +35,7 @@ This project includes a couple of Nginx configuration files in its nginx directo
 
 and then start a container to use those configuration files and easily reconfigure Nginx editing from the host.
 
-  ``docker run -d --network=drupal -v /home/alexis/mydocker/dockerize-drupal/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf -v /home/alexis/mydocker/dockerize-drupal/nginx/nginx.conf:/etc/nginx/nginx.conf -v /home/alexis/mydocker/drupal-project/html:/usr/share/nginx/html -p 40010:80 --hostname=drupal-web1 --name=drupal-web1 nginx:1.10.2``
+  ``docker run -d --network=drupal -v /home/alexis/mydocker/dockerize-drupal/nginx/conf.d/drupal7.conf:/etc/nginx/conf.d/default.conf -v /home/alexis/mydocker/dockerize-drupal/nginx/nginx.conf:/etc/nginx/nginx.conf -v /home/alexis/mydocker/drupal-project/html:/usr/share/nginx/html -p 40010:80 --hostname=drupal-web1 --name=drupal-web1 nginx:1.10.2``
 
 
 Create container for PHP FPM, which will be called from Nginx.::
@@ -52,7 +52,7 @@ Manually add PHP extensions. This can be incorporated into my PHP Dockerfile lat
     docker-php-ext-install -j$(nproc) pdo_mysql
 
 
-Make sure your Nginx configuration file contains the correct rewrite rules for either Drupal 7 or 8. I think they change a bit.
+Make sure use the correct Nginx configuration file as some rewrite rules differ for Drupal 7 and 8.
 
 
 Troubleshooting
