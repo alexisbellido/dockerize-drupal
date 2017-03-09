@@ -38,9 +38,21 @@ and then start a container to use those configuration files and easily reconfigu
   ``docker run -d --network=drupal -v /home/alexis/mydocker/dockerize-drupal/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf -v /home/alexis/mydocker/dockerize-drupal/nginx/nginx.conf:/etc/nginx/nginx.conf -v /home/alexis/mydocker/drupal-project/html:/usr/share/nginx/html -p 40010:80 --hostname=drupal-web1 --name=drupal-web1 nginx:1.10.2``
 
 
- Create container for PHP FPM, which will be called from Nginx.::
+Create container for PHP FPM, which will be called from Nginx.::
+
 
     docker run -d --network=drupal -v /home/alexis/mydocker/drupal-project/html:/usr/share/nginx/html --hostname=drupal-php1 --name=drupal-php1 php:7.1.2-fpm
+
+Manually add PHP extensions. This can be incorporated into my PHP Dockerfile later. See https://hub.docker.com/_/php/ for instructions.::
+
+    docker exec -it drupal-php1 bash
+    apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng12-dev 
+    docker-php-ext-install -j$(nproc) iconv mcrypt
+    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && docker-php-ext-install -j$(nproc) gd
+    docker-php-ext-install -j$(nproc) pdo_mysql
+
+
+Make sure your Nginx configuration file contains the correct rewrite rules for either Drupal 7 or 8. I think they change a bit.
 
 
 Troubleshooting
@@ -62,3 +74,4 @@ The Nginx and PHP-FPM containers need to map to the same directory because Nginx
     }
 
 
+Drupal 7 may not detect clean URLs if you installed it without the correct rewrite rules in your Nginx configuration. If that happens. Delete the database and start from scratch making sure the Nginx configuration is correct.
