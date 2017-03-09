@@ -41,3 +41,22 @@ and then start a container to use those configuration files and easily reconfigu
  Create container for PHP FPM, which will be called from Nginx.
 
   ``docker run -d --network=drupal -v /home/alexis/mydocker/drupal-project/html:/usr/share/nginx/html --hostname=drupal-php1 --name=drupal-php1 php:7.1.2-fpm``
+
+
+Troubleshooting
+===========================================================================
+
+The Nginx and PHP-FPM containers need to map to the same directory because Nginx only passes a path to PHP-FPM. If you get 404 errors visiting a php file you may need to verify that the SCRIPT_FILENAME parameter is passing the correct path. I temporarily changed the log_format main in nginx.conf to verify the value of $document_root and I noticed it was /etc/nginx/html so I added the root directive to the location block processing php files.
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        # root is super important to let the PHP-FPM access the path provided by Nginx
+        root /usr/share/nginx/html;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        # this points to the container running PHP-FPM
+        fastcgi_pass drupal-php1:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+    }
