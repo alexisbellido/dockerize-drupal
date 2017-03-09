@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  drupal-db2:
+    container_name: drupal-db2
+    image: "mysql:5.7.17"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=drupal
+
+  drupal-web2:
+    container_name: drupal-web2
+    image: "nginx:1.10.2"
+    restart: always
+    environment:
+      - APP_PORT=8000
+    ports:
+      - "40020:80"
+    volumes:
+      - /home/alexis/mydocker/drupal-project:/usr/share/nginx/drupal-project
+    depends_on:
+      - drupal-db2

@@ -1,0 +1,1 @@
+- Setup Docker Compose based on ideas from https://github.com/alexisbellido/dockerize-django
