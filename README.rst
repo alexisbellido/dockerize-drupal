@@ -40,7 +40,7 @@ and then start a container to use those configuration files and easily reconfigu
 
  Create container for PHP FPM, which will be called from Nginx.::
 
-    ``docker run -d --network=drupal -v /home/alexis/mydocker/drupal-project/html:/usr/share/nginx/html --hostname=drupal-php1 --name=drupal-php1 php:7.1.2-fpm``
+    docker run -d --network=drupal -v /home/alexis/mydocker/drupal-project/html:/usr/share/nginx/html --hostname=drupal-php1 --name=drupal-php1 php:7.1.2-fpm
 
 
 Troubleshooting
