@@ -1,1 +1,2 @@
 - Setup Docker Compose based on ideas from https://github.com/alexisbellido/dockerize-django
+- Include configuration files for Nginx within compose directory. See http://geekyplatypus.com/dockerise-your-php-application-with-nginx-and-php7-fpm/

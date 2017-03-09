@@ -9,7 +9,7 @@ I will try to have separate containers for MySQL, PHP7-FPM and Nginx.
 Overview
 ===========================================================================
 
-Create a bridge network for your containers on your host.
+Create a bridge network for all the containers used by this project on your host.
 
   ``docker network create -d bridge drupal``
 
@@ -32,6 +32,12 @@ This project includes a couple of Nginx configuration files in its nginx directo
   ``docker cp temp-nginx:/etc/nginx/nginx.conf /my-nginx-conf/``
   ``docker rm -f temp-nginx``
 
+
 and then start a container to use those configuration files and easily reconfigure Nginx editing from the host.
 
   ``docker run -d --network=drupal -v /home/alexis/mydocker/dockerize-drupal/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf -v /home/alexis/mydocker/dockerize-drupal/nginx/nginx.conf:/etc/nginx/nginx.conf -v /home/alexis/mydocker/drupal-project/html:/usr/share/nginx/html -p 40010:80 --hostname=drupal-web1 --name=drupal-web1 nginx:1.10.2``
+
+
+ Create container for PHP FPM, which will be called from Nginx.
+
+  ``docker run -d --network=drupal -v /home/alexis/mydocker/drupal-project/html:/usr/share/nginx/html --hostname=drupal-php1 --name=drupal-php1 php:7.1.2-fpm``
