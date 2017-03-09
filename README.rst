@@ -48,6 +48,7 @@ Troubleshooting
 
 The Nginx and PHP-FPM containers need to map to the same directory because Nginx only passes a path to PHP-FPM. If you get 404 errors visiting a php file you may need to verify that the SCRIPT_FILENAME parameter is passing the correct path. I temporarily changed the log_format main in nginx.conf to verify the value of $document_root and I noticed it was /etc/nginx/html so I added the root directive to the location block processing php files.
 
+::
     location ~ \.php$ {
         try_files $uri =404;
         # root is super important to let the PHP-FPM access the path provided by Nginx
