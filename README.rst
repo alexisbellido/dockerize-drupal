@@ -46,6 +46,7 @@ Create container for PHP FPM, which will be called from Nginx.::
 Manually add PHP extensions. This can be incorporated into my PHP Dockerfile later. See https://hub.docker.com/_/php/ for instructions.::
 
     docker exec -it drupal-php1 bash
+    apt-get update
     apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng12-dev 
     docker-php-ext-install -j$(nproc) iconv mcrypt
     docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && docker-php-ext-install -j$(nproc) gd
@@ -53,6 +54,11 @@ Manually add PHP extensions. This can be incorporated into my PHP Dockerfile lat
 
 
 Make sure use the correct Nginx configuration file as some rewrite rules differ for Drupal 7 and 8.
+
+Launch with Docker Compose.::
+
+    cd compose-drupal7
+    docker-compose up -d
 
 
 Troubleshooting

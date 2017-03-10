@@ -1,23 +1,32 @@
 version: '2'
 
 services:
-  drupal-db2:
-    container_name: drupal-db2
+  drupal-db1:
+    container_name: drupal-db1
     image: "mysql:5.7.17"
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=drupal
 
-  drupal-web2:
-    container_name: drupal-web2
+  drupal-web1:
+    container_name: drupal-web1
     image: "nginx:1.10.2"
     restart: always
-    environment:
-      - APP_PORT=8000
     ports:
-      - "40020:80"
+      - "40010:80"
     volumes:
-      - /home/alexis/mydocker/drupal-project:/usr/share/nginx/drupal-project
+      - /home/alexis/mydocker/dockerize-drupal/nginx/conf.d/drupal7.conf:/etc/nginx/conf.d/default.conf
+      - /home/alexis/mydocker/dockerize-drupal/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /home/alexis/mydocker/drupal-project/html:/usr/share/nginx/html
     depends_on:
-      - drupal-db2
+      - drupal-db1
+
+  drupal-php1:
+    container_name: drupal-php1
+    image: "php:7.1.2-fpm"
+    restart: always
+    volumes:
+      - /home/alexis/mydocker/drupal-project/html:/usr/share/nginx/html
+    depends_on:
+      - drupal-web1
